@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-// Import screens
 import '../features/daily_input/screens/daily_input_screen.dart';
 import '../features/calendar/screens/calendar_screen.dart';
 import '../features/stats/screens/stats_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
-
-// Import theme provider
 import 'theme/theme_controller.dart';
 
 final appRouter = GoRouter(
@@ -19,7 +15,6 @@ final appRouter = GoRouter(
         return ScaffoldWithBottomNav(navigationShell: navigationShell);
       },
       branches: [
-        // Tab 1: Daily Input
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -32,7 +27,6 @@ final appRouter = GoRouter(
             ),
           ],
         ),
-        // Tab 2: Calendar
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -41,7 +35,6 @@ final appRouter = GoRouter(
             ),
           ],
         ),
-        // Tab 3: Statistics
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -50,7 +43,6 @@ final appRouter = GoRouter(
             ),
           ],
         ),
-        // Tab 4: Settings
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -72,7 +64,6 @@ class ScaffoldWithBottomNav extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Force rebuild when theme changes
     ref.watch(themeModeProvider);
 
     return Scaffold(

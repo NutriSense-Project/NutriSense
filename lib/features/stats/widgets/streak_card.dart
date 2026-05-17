@@ -32,7 +32,7 @@ class StreakCard extends StatelessWidget {
                   style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  streak >= 7 ? "Amazing consistency! 🔥" : "Keep the momentum going",
+                  streak >= 7 ? "Amazing consistency!" : "Keep the momentum going!",
                   style: TextStyle(color: Colors.grey[600]),
                 ),
               ],

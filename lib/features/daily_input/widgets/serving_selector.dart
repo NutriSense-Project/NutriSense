@@ -18,18 +18,18 @@ class ServingSelectorBottomSheet extends StatefulWidget {
 }
 
 class _ServingSelectorBottomSheetState extends State<ServingSelectorBottomSheet> {
-  late int _selectedServings;
+  int _selectedServings = 1;
 
   @override
   void initState() {
     super.initState();
-    _selectedServings = widget.currentServings;
+    _selectedServings = widget.currentServings > 0 ? widget.currentServings : 1;
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.all(24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -39,50 +39,51 @@ class _ServingSelectorBottomSheetState extends State<ServingSelectorBottomSheet>
             style: Theme.of(context).textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
-          Text(
-            widget.group.servingHint,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+          Text(widget.group.servingHint),
           const SizedBox(height: 32),
 
-          Wrap(
-            spacing: 12,
-            runSpacing: 12,
-            children: [0, 1, 2, 3, 4].map((count) {
-              final isSelected = _selectedServings == count;
-              return ChoiceChip(
-                label: Text(count == 4 ? '4+' : count.toString()),
-                selected: isSelected,
-                selectedColor: Theme.of(context).colorScheme.primaryContainer,
-                labelStyle: TextStyle(
-                  color: isSelected
-                      ? Theme.of(context).colorScheme.onPrimaryContainer
-                      : null,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                ),
-                onSelected: (_) {
-                  setState(() {
-                    _selectedServings = count;
-                  });
-                  widget.onChanged(count);
-                },
-              );
-            }).toList(),
+          Text(
+            "$_selectedServings serving${_selectedServings > 1 ? 's' : ''}",
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+
+          Slider(
+            value: _selectedServings.toDouble(),
+            min: 0,
+            max: 10,
+            divisions: 10,
+            label: _selectedServings.toString(),
+            onChanged: (value) {
+              setState(() => _selectedServings = value.round());
+            },
+          ),
+
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("0"),
+              Text("10"),
+            ],
           ),
 
           const SizedBox(height: 24),
 
-          if (_selectedServings > 0)
-            TextButton.icon(
-              onPressed: () {
-                setState(() => _selectedServings = 0);
-                widget.onChanged(0);
-              },
-              icon: const Icon(Icons.delete_outline),
-              label: const Text("Remove"),
-            ),
-
-          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("Cancel"),
+              ),
+              FilledButton(
+                onPressed: () {
+                  widget.onChanged(_selectedServings);
+                  Navigator.pop(context);
+                },
+                child: const Text("Confirm"),
+              ),
+            ],
+          ),
         ],
       ),
     );

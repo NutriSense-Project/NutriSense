@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fl_chart/fl_chart.dart';
-
-import '../../../data/repositories/daily_repository.dart';
 import '../../../data/models/daily_entry.dart';
 import '../../../features/daily_input/providers/daily_input_provider.dart';
 import '../widgets/streak_card.dart';
@@ -26,6 +23,7 @@ class StatsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Statistics'),
+        animateColor: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),

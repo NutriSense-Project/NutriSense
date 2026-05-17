@@ -15,16 +15,14 @@ class ScoreTrendLineChart extends StatelessWidget {
       );
     }
 
-    // Sort entries by date (oldest first)
     final sortedEntries = entries.toList()
       ..sort((a, b) => a.date.compareTo(b.date));
 
-    // Create spots with day number starting from 1
     final spots = sortedEntries.asMap().entries.map((e) {
-      final index = e.key;        // 0-based index
+      final index = e.key;        
       final entry = e.value;
       return FlSpot(
-        (index + 1).toDouble(),   // ← Changed: Start from 1
+        (index + 1).toDouble(), 
         entry.score.toDouble(),
       );
     }).toList();
@@ -79,11 +77,11 @@ class ScoreTrendLineChart extends StatelessWidget {
             dotData: const FlDotData(show: true),
             belowBarData: BarAreaData(
               show: true,
-              color: Colors.green.withOpacity(0.1),
+              color: Colors.green.withValues(alpha: .1),
             ),
           ),
         ],
-        minX: 1,                    // Start X axis from 1
+        minX: 1,              
         maxX: spots.length.toDouble(),
         minY: 0,
         maxY: 100,

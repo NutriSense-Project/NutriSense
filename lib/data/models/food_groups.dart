@@ -6,7 +6,8 @@ class FoodGroup {
   final FoodCategory category;
   final String emoji;
   final String servingHint;
-  final int weight; // Higher = more important for scoring
+  final int weight;
+  final String? description;
 
   const FoodGroup({
     required this.id,
@@ -15,10 +16,10 @@ class FoodGroup {
     required this.emoji,
     required this.servingHint,
     this.weight = 10,
+    this.description,
   });
 }
 
-// ====================== ALL FOOD GROUPS (Single Source of Truth) ======================
 final List<FoodGroup> allFoodGroups = [
   // === Adequacy (Encourage) ===
   FoodGroup(
@@ -26,81 +27,89 @@ final List<FoodGroup> allFoodGroups = [
     name: 'Fruits',
     category: FoodCategory.adequacy,
     emoji: '🍎',
-    servingHint: '1 cup / 1 medium piece',
+    servingHint: '1 medium fruit or 1 cup',
     weight: 12,
   ),
   FoodGroup(
-    id: 'starchy_vegetables',
-    name: 'Starchy Vegetables',
+    id: 'vegetables',
+    name: 'Vegetables',
     category: FoodCategory.adequacy,
-    emoji: '🥔',
-    servingHint: '1 cup raw / ½ cup cooked',
-    weight: 12,
-  ),
-  FoodGroup(
-    id: 'protein',
-    name: 'Saturated Fat',
-    category: FoodCategory.moderation,
-    emoji: '🍗',
-    servingHint: 'Fried & fatty foods',
-    weight: 10,
-  ),
-  FoodGroup(
-    id: 'greens_beans',
-    name: 'Greens & Beans',
-    category: FoodCategory.adequacy,
-    emoji: '🥬',
-    servingHint: '½ cup',
-    weight: 14,
+    emoji: '🥦',
+    servingHint: '1 cup raw or ½ cup cooked',
+    weight: 15,
   ),
   FoodGroup(
     id: 'whole_grains',
     name: 'Whole Grains',
     category: FoodCategory.adequacy,
     emoji: '🌾',
-    servingHint: '½ cup cooked',
+    servingHint: '½ cup cooked or 1 slice',
     weight: 13,
+  ),
+  FoodGroup(
+    id: 'proteins',
+    name: 'Proteins',
+    category: FoodCategory.adequacy,
+    emoji: '🍗',
+    servingHint: '100g or 3-4 oz',
+    weight: 11,
   ),
   FoodGroup(
     id: 'dairy',
     name: 'Dairy',
     category: FoodCategory.adequacy,
     emoji: '🥛',
-    servingHint: '1 cup',
+    servingHint: '1 cup milk/yogurt',
     weight: 10,
   ),
   FoodGroup(
-    id: 'seafood_nuts',
-    name: 'Seafood & Nuts',
+    id: 'seafood',
+    name: 'Seafood',
     category: FoodCategory.adequacy,
     emoji: '🐟',
-    servingHint: '100g / handful nuts',
+    servingHint: '100g',
     weight: 12,
+  ),
+  FoodGroup(
+    id: 'nuts',
+    name: 'Nuts & Seeds',
+    category: FoodCategory.adequacy,
+    emoji: '🥜',
+    servingHint: '1 handful (28g)',
+    weight: 11,
   ),
 
   // === Moderation (Limit) ===
   FoodGroup(
-    id: 'added_sugars',
-    name: 'Added Sugars',
+    id: 'refined_grains',
+    name: 'Refined Grains',
+    category: FoodCategory.moderation,
+    emoji: '🍞',
+    servingHint: '1 slice of bread / 1/2 cup rice',
+    weight: 4,
+  ),
+  FoodGroup(
+    id: 'fried_food',
+    name: 'Fried Food',
+    category: FoodCategory.moderation,
+    emoji: '🍟',
+    servingHint: '1 drumstick / 100g fries',
+    weight: 12,
+  ),
+  FoodGroup(
+    id: 'processed_food',
+    name: 'Processed Food',
+    category: FoodCategory.moderation,
+    emoji: '🌭',
+    servingHint: '1 sausage/spam',
+    weight: 12,
+  ),
+  FoodGroup(
+    id: 'sweets',
+    name: 'Sweets & Sugary Drinks',
     category: FoodCategory.moderation,
     emoji: '🍭',
-    servingHint: 'Sweets, Juices & sodas',
-    weight: 13,
-  ),
-  FoodGroup(
-    id: 'sodium',
-    name: 'Sodium',
-    category: FoodCategory.moderation,
-    emoji: '🧂',
-    servingHint: 'Processed food with extra salt',
-    weight: 11,
-  ),
-  FoodGroup(
-    id: 'saturated_fat',
-    name: 'Saturated Fat',
-    category: FoodCategory.moderation,
-    emoji: '🍗',
-    servingHint: 'Fried & fatty foods',
-    weight: 10,
+    servingHint: '1 can of coke (12oz) / 4 lollipops',
+    weight: 14,
   ),
 ];

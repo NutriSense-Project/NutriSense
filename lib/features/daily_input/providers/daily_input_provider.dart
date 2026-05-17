@@ -24,7 +24,7 @@ class DailyEntryNotifier extends FamilyNotifier<DailyEntry, DateTime> {
       id: normalized.toIso8601String().split('T').first,
       date: normalized,
       servings: {},
-      score: 45,                    // Force base score
+      score: 45,       
     );
   }
 
@@ -33,13 +33,13 @@ class DailyEntryNotifier extends FamilyNotifier<DailyEntry, DateTime> {
       final loaded = await _repository.getEntryForDate(date);
       if (loaded != null) {
         state = loaded;
-        print("✅ LOADED saved entry | Score: ${loaded.score}");
+        print("Loaded saved entry | Score: ${loaded.score}");
       } else {
         state = _createEmptyEntry(date);
-        print("ℹ️ Fresh day → Score reset to 45");
+        print("New day - Score reset to 45");
       }
     } catch (e) {
-      print("❌ Load error: $e");
+      print("Load error: $e");
       state = _createEmptyEntry(date);
     }
   }
@@ -66,14 +66,14 @@ class DailyEntryNotifier extends FamilyNotifier<DailyEntry, DateTime> {
       final entryToSave = DailyEntry(
         id: state.id,
         date: state.date,
-        servings: Map<String, int>.from(state.servings), // Deep copy
+        servings: Map<String, int>.from(state.servings),
         score: state.score,
       );
       
       await _repository.saveEntry(entryToSave);
-      print("💾 SAVED → Date: ${state.date.toIso8601String().split('T').first} | Items: ${state.servings.length} | Score: ${state.score}");
+      print("Saved - Date: ${state.date.toIso8601String().split('T').first} | Items: ${state.servings.length} | Score: ${state.score}");
     } catch (e) {
-      print("❌ Save error: $e");
+      print("Save error: $e");
     }
   }
 }

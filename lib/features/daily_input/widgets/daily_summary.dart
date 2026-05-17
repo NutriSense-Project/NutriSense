@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/daily_input_provider.dart';
-import '../../../core/widgets/pop_button.dart';
+import 'package:nutrisense/core/widgets/pop_button.dart';
+import 'package:nutrisense/core/widgets/animated_top_snackbar.dart';
 
 class DailySummaryCard extends ConsumerWidget {
   final DateTime selectedDate;
@@ -54,7 +55,6 @@ class DailySummaryCard extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        selectedDate == null || 
                         (selectedDate.year == DateTime.now().year && 
                          selectedDate.month == DateTime.now().month && 
                          selectedDate.day == DateTime.now().day)
@@ -87,14 +87,8 @@ class DailySummaryCard extends ConsumerWidget {
             PopButton(
               onPressed: () async {
                 await ref.read(currentDailyEntryProvider(selectedDate).notifier).save();
-                
-                // Optional: Only refresh stats when user goes to that tab
-                // ref.invalidate(statsDataProvider);   // ← Comment this out for now
-
                 if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('✅ Day saved successfully'), backgroundColor: Colors.green),
-                  );
+                  AnimatedTopSnackBar.show(context, '✅ Day saved successfully!');
                 }
               },
               child: const Row(
@@ -113,7 +107,7 @@ class DailySummaryCard extends ConsumerWidget {
   }
 
   String _getScoreMessage(int score) {
-    if (score >= 80) return "Excellent work today! 💪";
+    if (score >= 80) return "Excellent work today!";
     if (score >= 65) return "Good progress!";
     if (score >= 45) return "Room for improvement";
     return "Let's add more healthy foods";

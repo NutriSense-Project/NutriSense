@@ -1,7 +1,6 @@
 import '../../../data/models/daily_entry.dart';
 
 class StreakService {
-  /// Calculate current streak from list of entries
   static int calculateCurrentStreak(List<DailyEntry> entries) {
     if (entries.isEmpty) return 0;
 

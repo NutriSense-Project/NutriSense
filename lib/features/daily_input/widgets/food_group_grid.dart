@@ -10,17 +10,13 @@ class FoodGroupGrid extends ConsumerWidget {
   const FoodGroupGrid({super.key, required this.selectedDate});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);  
+  Widget build(BuildContext context, WidgetRef ref) {  
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
         final height = constraints.maxHeight;
 
-        // Adaptive columns based on width
         final crossAxisCount = width > 800 ? 4 : width > 600 ? 3 : 2;
-
-        // Dynamic aspect ratio based on available height
         final childAspectRatio = height < 700 ? 1.05 : 1.22;
 
         return GridView.builder(
@@ -47,7 +43,7 @@ class FoodGroupGrid extends ConsumerWidget {
             return Card(
               elevation: isLogged ? 3 : 1.5,
               color: isLogged
-                  ? theme.colorScheme.primaryContainer.withOpacity(0.8)
+                  ? theme.colorScheme.primaryContainer.withValues(alpha: 0.8)
                   : null,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
@@ -71,7 +67,6 @@ class FoodGroupGrid extends ConsumerWidget {
 
                       const SizedBox(height: 6),
 
-                      // Food Name - Very safe layout
                       Expanded(
                         child: Center(
                           child: Text(
@@ -80,7 +75,7 @@ class FoodGroupGrid extends ConsumerWidget {
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w600,
                               color: theme.colorScheme.onSurface,
-                              fontSize: 13.8,           // Smaller but readable
+                              fontSize: 13.8,        
                               height: 1.05,
                             ),
                             maxLines: 2,
@@ -91,7 +86,6 @@ class FoodGroupGrid extends ConsumerWidget {
 
                       const SizedBox(height: 4),
 
-                      // Compact servings badge
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3.5),
                         decoration: BoxDecoration(

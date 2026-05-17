@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nutrisense/data/repositories/daily_repository.dart';
+import 'package:nutrisense/features/meal_search/services/common_foods.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_controller.dart';  
 import 'core/router.dart';            
@@ -14,7 +15,8 @@ void main() async {
   await Hive.initFlutter();
   await HiveBoxes.init();
   await DailyRepository().getAllEntries();
-  await SearchCache.init();   
+  await SearchCache.init();
+  CommonFoods.init();
 
   runApp(const ProviderScope(child: MyApp()));
 }

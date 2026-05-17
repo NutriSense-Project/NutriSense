@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/theme_controller.dart';
-import '../../../data/repositories/daily_repository.dart';
 import '../../../features/daily_input/providers/daily_input_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -16,7 +15,6 @@ class SettingsScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Appearance Section
           const Text("Appearance", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
 
@@ -51,7 +49,7 @@ class SettingsScreen extends ConsumerWidget {
                       ref.read(themeModeProvider.notifier).setThemeMode(selected.first);
                     },
                     style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 12)),
+                      padding: WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12)),
                     ),
                   ),
                 ],
@@ -61,7 +59,6 @@ class SettingsScreen extends ConsumerWidget {
 
           const SizedBox(height: 32),
 
-          // Data Management Section
           const Text("Data Management", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
 
@@ -110,7 +107,7 @@ class SettingsScreen extends ConsumerWidget {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text("🗑️ All data cleared successfully"),
+                    content: Text("All data cleared successfully"),
                     backgroundColor: Colors.red,
                   ),
                 );

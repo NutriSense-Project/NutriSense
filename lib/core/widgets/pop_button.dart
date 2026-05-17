@@ -4,7 +4,7 @@ class PopButton extends StatefulWidget {
   final VoidCallback onPressed;
   final Widget child;
   final Color? backgroundColor;
-  final Color? foregroundColor;   // Controls both text and icon color
+  final Color? foregroundColor;
 
   const PopButton({
     super.key,
@@ -49,7 +49,7 @@ class _PopButtonState extends State<PopButton> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    final foregroundColor = widget.foregroundColor ?? Colors.grey[200];
+    final foregroundColor = Theme.of(context).colorScheme.surface;
 
     return GestureDetector(
       onTapDown: _handleTapDown,
@@ -69,7 +69,7 @@ class _PopButtonState extends State<PopButton> with SingleTickerProviderStateMix
               child: DefaultTextStyle(
                 style: TextStyle(
                   color: foregroundColor,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w800,
                   fontSize: 16,
                 ),
                 child: IconTheme(

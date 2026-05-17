@@ -8,7 +8,7 @@ class CachedSearchResult {
   final String query;
 
   @HiveField(1)
-  final List<String> resultNames; // Store names only for simplicity
+  final List<String> resultNames;
 
   @HiveField(2)
   final DateTime timestamp;

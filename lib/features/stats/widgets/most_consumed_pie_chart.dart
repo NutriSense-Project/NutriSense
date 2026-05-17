@@ -14,7 +14,6 @@ class MostConsumedPieChart extends StatelessWidget {
       return const Center(child: Text("No data yet"));
     }
 
-    // Aggregate servings
     final Map<String, int> totalServings = {};
     for (var entry in entries) {
       entry.servings.forEach((groupId, count) {
@@ -99,9 +98,8 @@ class MostConsumedPieChart extends StatelessWidget {
 
     return Column(
       children: [
-        // Pie Chart - Reduced height to prevent overflow
         SizedBox(
-          height: 240,                    // Reduced from 260
+          height: 240, 
           child: PieChart(
             PieChartData(
               sections: sections,

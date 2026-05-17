@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'food_groups.dart';
 
 part 'daily_entry.g.dart';
 

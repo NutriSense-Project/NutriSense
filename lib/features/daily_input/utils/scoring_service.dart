@@ -1,91 +1,79 @@
 import '../../../data/models/food_groups.dart';
 
 class ScoringService {
+
   static int calculateScore(Map<String, int> servings) {
     double score = 45.0;
 
-    // Adequacy groups
     for (var group in allFoodGroups.where((g) => g.category == FoodCategory.adequacy)) {
       final intake = servings[group.id] ?? 0;
       if (intake == 0) continue;
 
       double multiplier = 1.0;
-      if (group.id.contains('vegetables') || group.id.contains('greens')) multiplier = 1.4;
-      if (group.id == 'whole_grains') multiplier = 1.25;
+      if (group.id == 'vegetables' || group.id == 'greens_beans') multiplier = 1.45;
+      if (group.id == 'whole_grains') multiplier = 1.3;
+      if (group.id == 'seafood_plant_protein') multiplier = 1.25;
 
-      score += (intake * group.weight * multiplier).clamp(0, 35);
+      double effectiveIntake = intake.toDouble();
+      if (intake > 3) {
+        effectiveIntake = 3 + (intake - 3) * 0.45;
+      }
+
+      score += (effectiveIntake * group.weight * multiplier).clamp(0, 42);
     }
 
-    // Moderation groups
     for (var group in allFoodGroups.where((g) => g.category == FoodCategory.moderation)) {
       final intake = servings[group.id] ?? 0;
       if (intake == 0) continue;
 
-      double penalty = intake * group.weight * 0.95;
-      if (intake >= 3) penalty *= 1.6;
+      double penalty = intake * group.weight * 1.15;
 
-      score -= penalty.clamp(0, 35);
+      if (intake >= 4) penalty *= 1.7;     
+      else if (intake >= 2) penalty *= 1.3;
+
+      score -= penalty.clamp(0, 45);
     }
 
-    // Diversity bonus
-    if (servings.length >= 6) score += 8;
-    if (servings.length >= 8) score += 5;
+    final uniqueGroups = servings.length;
+    if (uniqueGroups >= 5) score += 8;
+    if (uniqueGroups >= 7) score += 5;
+    if (uniqueGroups >= 9) score += 4;
 
     return score.clamp(0, 100).round();
   }
 
-  /// Suggestions ordered by priority (highest weight first)
   static List<String> getSuggestions(Map<String, int> servings) {
-    final score = calculateScore(servings);
-    final List<String> suggestions = [];
+    //final score = calculateScore(servings);
+    final suggestions = <String>[];
 
-    // Excellent / Good scores → Positive message only
-    if (score >= 85) {
-      return ["Outstanding day! You're eating very well 💪"];
-    }
-    if (score >= 70) {
-      return ["Good job today! Keep building on this."];
-    }
+    //if (score >= 85) {
+    //  return ["Outstanding day! You're eating very well"];
+    //}
 
-    // === Priority 1: Missing High-Weight Adequacy Groups ===
-    final missingHighPriority = allFoodGroups
+    final missingHigh = allFoodGroups
         .where((g) => g.category == FoodCategory.adequacy && g.weight >= 12)
         .where((g) => (servings[g.id] ?? 0) == 0)
-        .toList()
-      ..sort((a, b) => b.weight.compareTo(a.weight)); // Highest weight first
+        .take(2);
 
-    for (var group in missingHighPriority.take(2)) {
-      suggestions.add("High priority: Add more ${group.name.toLowerCase()} today.");
+    for (var group in missingHigh) {
+      suggestions.add("High priority: Add more ${group.name.toLowerCase()}.");
     }
 
-    // === Priority 2: Missing Medium-Weight Adequacy Groups ===
-    final missingMedium = allFoodGroups
-        .where((g) => g.category == FoodCategory.adequacy && g.weight >= 10)
-        .where((g) => (servings[g.id] ?? 0) == 0)
-        .where((g) => !missingHighPriority.contains(g))
-        .toList()
-      ..sort((a, b) => b.weight.compareTo(a.weight));
-
-    for (var group in missingMedium.take(1)) {
-      suggestions.add("Good to add: ${group.name.toLowerCase()}.");
-    }
-
-    // === Priority 3: Moderation Warnings ===
-    final excessiveModeration = allFoodGroups
+    final excessive = allFoodGroups
         .where((g) => g.category == FoodCategory.moderation)
         .where((g) => (servings[g.id] ?? 0) >= 2)
-        .toList()
-      ..sort((a, b) => b.weight.compareTo(a.weight)); // Most harmful first
+        .take(1);
 
-    for (var group in excessiveModeration.take(1)) {
-      suggestions.add("Try reducing ${group.name.toLowerCase()} today.");
+    for (var group in excessive) {
+      if (group.id == 'refined_grains') {
+        suggestions.add("Try eating high-fiber foods such as whole grains.");
+      } else {
+        suggestions.add("Try reducing ${group.name.toLowerCase()}.");
+      }
     }
 
-    // Fallback
     if (suggestions.isEmpty) {
-      suggestions.add(servings.isEmpty 
-          ? "Start by logging some fruits or vegetables" 
-          : "Try increasing variety in your food groups");
+      suggestions.add("Try increasing variety across food groups.");
     }
 
     return suggestions;
